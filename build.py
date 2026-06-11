@@ -2,10 +2,33 @@
 """
 build.py — converts content/projects/*.md → data/projects.json + projects/*.html
 Run after editing any markdown file: python build.py
-No dependencies beyond Python stdlib.
+Dependencies: pip install markdown
 """
 
 import os, json, re, html
+import urllib.request
+import markdown
+
+
+# ── fetcher helper ─────────────────────────────────────────
+def fetch_github_readme_html(repo_url):
+    """Fetches the ALREADY RENDERED HTML README from GitHub."""
+    match = re.search(r"github\.com/([^/]+)/([^/]+)", repo_url)
+    if not match:
+        return ""
+    owner, repo = match.groups()
+    repo = repo.replace(".git", "")
+    api_url = f"https://api.github.com/repos/{owner}/{repo}/readme"
+    try:
+        # By requesting .html instead of .raw, GitHub parses the markdown for us perfectly!
+        req = urllib.request.Request(
+            api_url, headers={"Accept": "application/vnd.github.v3.html"}
+        )
+        with urllib.request.urlopen(req) as response:
+            return response.read().decode("utf-8")
+    except Exception as e:
+        print(f"  [!] Could not fetch README for {owner}/{repo}: {e}")
+        return ""
 
 
 # ── frontmatter parser ─────────────────────────────────────
@@ -32,35 +55,6 @@ def parse_frontmatter(text):
             meta[key] = val
 
     return meta, parts[2].strip()
-
-
-# ── tiny markdown → html ───────────────────────────────────
-def md_to_html(text):
-    """Minimal markdown: paragraphs, **bold**, _italic_ / *italic*, `code`, # headings."""
-    out = []
-    for block in text.split("\n\n"):
-        block = block.strip()
-        if not block:
-            continue
-        # heading
-        m = re.match(r"^(#{1,6})\s+(.*)", block)
-        if m:
-            level = len(m.group(1))
-            out.append(f"<h{level}>{inline(m.group(2))}</h{level}>")
-            continue
-        # paragraph
-        out.append(f"<p>{inline(block)}</p>")
-    return "\n".join(out)
-
-
-def inline(text):
-    text = html.escape(text)
-    text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
-    text = re.sub(r"__(.+?)__", r"<strong>\1</strong>", text)
-    text = re.sub(r"\*(.+?)\*", r"<em>\1</em>", text)
-    text = re.sub(r"_(.+?)_", r"<em>\1</em>", text)
-    text = re.sub(r"`(.+?)`", r"<code>\1</code>", text)
-    return text
 
 
 # ── page template ──────────────────────────────────────────
@@ -110,6 +104,7 @@ PAGE_TMPL = """<!DOCTYPE html>
         </header>
         <article class="detail-body">
             {body_html}
+            {readme_html}
         </article>
         {extra}
     </main>
@@ -133,10 +128,28 @@ def render_project_page(item):
     if item.get("repo-url"):
         extra = f'<a class="detail-link" href="{html.escape(item["repo-url"])}" target="_blank" rel="noopener">view repository</a>'
 
+    # 1. Parse local markdown with standard Python markdown
+    body_html = markdown.markdown(
+        item.get("body", ""), extensions=["fenced_code", "tables"]
+    )
+
+    # 2. Inject the GitHub pre-parsed HTML directly into our container!
+    readme_html = ""
+    if item.get("readme_content"):
+        readme_html = f"""
+        <div class="readme-container">
+            <div class="readme-badge">readme</div>
+            <div class="readme-content">
+                {item["readme_content"]}
+            </div>
+        </div>
+        """
+
     return PAGE_TMPL.format(
         title=html.escape(item["title"]),
         tags_html=tags_html,
-        body_html=md_to_html(item["body"]),
+        body_html=body_html,
+        readme_html=readme_html,
         back_anchor="projects",
         extra=extra,
     )
@@ -157,8 +170,16 @@ def build(folder, out_json, pages_dir, page_renderer):
         path = os.path.join(folder, fname)
         with open(path, encoding="utf-8") as f:
             meta, body = parse_frontmatter(f.read())
+
         meta.setdefault("slug", fname.removesuffix(".md"))
         meta["body"] = body
+
+        # Fetch Pre-Rendered HTML if repo-url exists
+        repo_url = meta.get("repo-url")
+        if repo_url and "github.com" in repo_url:
+            print(f"  Fetching HTML README for {repo_url}...")
+            meta["readme_content"] = fetch_github_readme_html(repo_url)
+
         items.append(meta)
 
         page_path = os.path.join(pages_dir, meta["slug"] + ".html")
@@ -166,13 +187,16 @@ def build(folder, out_json, pages_dir, page_renderer):
             f.write(page_renderer(meta))
         print(f'  {fname} → {meta["slug"]}.html')
 
-    # strip body from json — only metadata for the listing
-    listing = [{k: v for k, v in m.items() if k != "body"} for m in items]
+    listing = [
+        {k: v for k, v in m.items() if k not in ["body", "readme_content"]}
+        for m in items
+    ]
     os.makedirs(os.path.dirname(out_json), exist_ok=True)
     with open(out_json, "w", encoding="utf-8") as f:
         json.dump(listing, f, indent=2, ensure_ascii=False)
     print(f"  wrote {out_json} ({len(items)} items)\n")
 
 
-print("building projects...")
-build("content/projects", "data/projects.json", "projects", render_project_page)
+if __name__ == "__main__":
+    print("building projects...")
+    build("content/projects", "data/projects.json", "projects", render_project_page)

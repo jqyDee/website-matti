@@ -1,5 +1,10 @@
+.readme-container,
+.readme-container * {
+    text-transform: none !important;
+}
+
 .detail {
-    max-width: 720px;
+    max-width: 1080px;
     margin: 0 auto;
     padding: 60px 40px 100px;
 }
@@ -48,10 +53,6 @@
     color: var(--text);
 }
 
-.detail-body p {
-    margin: 0 0 20px;
-}
-
 .detail-body h2 {
     font-size: 1.5rem;
     color: var(--deep);
@@ -85,4 +86,157 @@
     .detail {
         padding: 40px 20px 80px;
     }
+}
+
+/* ----------------------------------------------------
+   Styling for BOTH GitHub README and Local Markdown 
+------------------------------------------------------- */
+
+.readme-container {
+    margin-top: 3rem;
+    padding: 2rem;
+    background-color: #f6f8fa; /* Light GitHub-style gray */
+    border: 1px solid #d0d7de;
+    border-radius: 8px;
+    color: #24292f;
+}
+
+.readme-badge {
+    display: inline-block;
+    background-color: #0969da;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+}
+
+/* Images and Tables */
+.readme-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+}
+
+.readme-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+.readme-content th, .readme-content td {
+    border: 1px solid #d0d7de;
+    padding: 8px 12px;
+}
+
+/* Hide GitHub Anchor Links */
+.readme-content .anchor {
+    display: none !important;
+}
+
+/* Reset Margins */
+.readme-content p, .detail-body p,
+.readme-content ul, .detail-body ul,
+.readme-content ol, .detail-body ol,
+.readme-content pre, .detail-body pre,
+.readme-content blockquote, .detail-body blockquote {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.readme-content li, .detail-body li {
+    margin-bottom: 0.25rem;
+}
+
+.readme-content h1, 
+.readme-content h2, 
+.readme-content h3, 
+.readme-content h4 {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+/* Container Paddings */
+.readme-content > *:first-child {
+    margin-top: 0 !important;
+}
+.readme-content > *:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* Links */
+.readme-content a, 
+.detail-body a {
+    color: #0969da;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.readme-content a:hover, 
+.detail-body a:hover {
+    text-decoration: underline;
+}
+
+/* Code Blocks */
+.readme-content pre,
+.detail-body pre {
+    background-color: #f6f8fa;
+    border: 1px solid #d0d7de;
+    padding: 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 85%;
+    line-height: 1.45;
+    color: #1f2328;
+}
+
+/* Lists */
+.readme-content ul,
+.detail-body ul {
+    list-style-type: disc;
+    padding-left: 2rem;
+    margin-bottom: 1rem;
+}
+
+.readme-content ol,
+.detail-body ol {
+    list-style-type: decimal;
+    padding-left: 2rem;
+    margin-bottom: 1rem;
+}
+
+.readme-content ul ul,
+.readme-content ol ul,
+.detail-body ul ul,
+.detail-body ol ul {
+    list-style-type: circle;
+    margin-top: 0.25rem;
+    margin-bottom: 0;
+}
+
+/* Syntax Highlighting (Only for GitHub Content) */
+.readme-content .pl-c { color: #6e7781; }
+.readme-content .pl-k { color: #cf222e; }
+.readme-content .pl-s { color: #0a3069; }
+.readme-content .pl-en { color: #8250df; }
+.readme-content .pl-smi { color: #24292f; }
+.readme-content .pl-c1 { color: #0550ae; }
+.readme-content .pl-ent { color: #116329; }
+.readme-content .pl-v { color: #953800; }
+.readme-content .pl-pds { color: #0a3069; }
+.readme-content .pl-corl { color: #0a3069; text-decoration: underline; }
+
+.readme-content pre code,
+.detail-body pre code {
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    font-size: 1em;
 }
