@@ -26,12 +26,23 @@ jobs:
         with:
           python-version: '3.x'
 
-      # Optional: Uncomment if your build.py requires external libraries (like jinja2, requests, etc.)
-      # - name: Install dependencies
-      #   run: pip install -r requirements.txt
-
       - name: Run build script
-        run: python build.py
+        run: make build 
+
+      - name: Prepare public folder
+        run: |
+          mkdir public
+          
+          cp index.html public/
+          cp favicon.svg public/
+          cp -r css public/
+          cp -r javascript public/
+          cp -r images public/
+          
+          cp -r projects public/
+          cp -r data public/
+          
+          touch public/.nojekyll
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -39,7 +50,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.' 
+          path: './public'
 
   deploy:
     environment:
