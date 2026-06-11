@@ -1,0 +1,56 @@
+.nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+    height: var(--nav-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    background: var(--black);
+}
+
+.nav-logo-link {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.nav-logo {
+    width: 44px;
+    height: 44px;
+    opacity: 0.75;
+    transition: transform var(--t-slow), opacity var(--t-slow);
+}
+
+.nav-logo:hover {
+    transform: rotate(10deg) scale(1.08);
+    opacity: 1;
+}
+
+.nav-list {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+}
+
+.nav-item {
+    font-weight: bold;
+    font-size: 18px;
+    color: var(--white);
+    transition: color var(--t-slow);
+}
+
+.nav-item:hover,
+.nav-item:focus-visible {
+    outline: none;
+}
+
+/* muted, darker versions of palette stops */
+.nav-list li:nth-child(1) .nav-item:hover,
+.nav-list li:nth-child(1) .nav-item:focus-visible { color: #4aabce; }
+.nav-list li:nth-child(2) .nav-item:hover,
+.nav-list li:nth-child(2) .nav-item:focus-visible { color: #3ecbae; }
+.nav-list li:nth-child(3) .nav-item:hover,
+.nav-list li:nth-child(3) .nav-item:focus-visible { color: #1aaa77; }

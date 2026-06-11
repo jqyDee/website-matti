@@ -1,0 +1,147 @@
+.hero {
+    min-height: calc(100vh - var(--nav-h));
+    background: var(--black);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+    width: 100%;
+}
+
+.hero-greeting {
+    margin: 0 0 8px;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.45);
+    letter-spacing: 0.06em;
+}
+
+.hero-name {
+    font-size: clamp(3.5rem, 10vw, 7rem);
+    font-weight: 700;
+    line-height: 1;
+    margin: 0 0 24px;
+    background: linear-gradient(135deg, #fff 40%, rgba(255, 255, 255, 0.35));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-tagline {
+    margin: 0 0 40px;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 400;
+}
+
+.hero-links {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* invisible expanded hit zone — padding/margin set by JS from tilt angle */
+.hero-link-wrap {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.hero-link {
+    position: relative;
+    z-index: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 4px;
+    color: var(--white);
+    font-weight: 500;
+    font-size: 0.95rem;
+    overflow: hidden;
+    box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.25);
+    transition: color var(--t-fast), box-shadow var(--t-fast);
+}
+
+/* radial spotlight follows mouse via --mouse-x / --mouse-y set by JS */
+.hero-link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(
+        circle at var(--mouse-x, 30%) var(--mouse-y, 50%),
+        var(--mint-dark)  0%,
+        var(--teal)  55%,
+        var(--ocean) 100%
+    );
+    transform: translateX(-105%);
+    transition: transform 300ms ease-out;
+}
+
+.hero-link-wrap:hover .hero-link::before {
+    transform: translateX(0);
+}
+
+.hero-link-wrap:hover .hero-link {
+    color: var(--deep);
+    box-shadow: var(--shadow-x, 0px) var(--shadow-y, 6px) 20px rgba(21, 149, 182, 0.45),
+                inset 0 0 0 0 transparent;
+    outline: none;
+}
+
+.hero-link-inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    pointer-events: none;
+}
+
+.icon-github,
+.icon-arrow {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.hero-decoration {
+    --size: clamp(300px, 38vw, 580px);
+    position: absolute;
+    right: 6%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: var(--size);
+    height: var(--size);
+    pointer-events: none;
+}
+
+.hero-shape-1 {
+    position: absolute;
+    width: calc(var(--size) * 0.78);
+    height: calc(var(--size) * 0.78);
+    right: 0;
+    top: 0;
+    background: linear-gradient(135deg, var(--teal), var(--deep-90));
+    transform: rotate(-20deg);
+    opacity: 0.6;
+}
+
+.hero-shape-2 {
+    position: absolute;
+    width: calc(var(--size) * 0.52);
+    height: calc(var(--size) * 0.52);
+    right: calc(var(--size) * 0.32);
+    top: calc(var(--size) * 0.50);
+    border-radius: 50%;
+    background: linear-gradient(to right, var(--mint-50), var(--mint));
+    opacity: 0.75;
+}

@@ -1,0 +1,145 @@
+.chat-container-outer {
+    display: flex;
+    justify-content: center;
+}
+
+.chat-container-inner {
+    display: flex;
+    width: min(600px, 100%);
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* questions — left side, outlined */
+.chat-container-inner .left {
+    margin: 0;
+    padding: 14px 22px;
+    font-weight: 500;
+    font-size: 1.05rem;
+    max-width: 82%;
+    color: var(--deep);
+    border: 2px solid var(--deep);
+    border-radius: 20px 20px 20px 7px;
+    align-self: flex-start;
+    background: var(--white);
+}
+
+/* answer group — wraps the collapsed-dots pill and the expanded bubble list */
+.answer-group {
+    align-self: flex-end;
+    max-width: 82%;
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.answer-group:focus-visible {
+    box-shadow: 0 0 0 3px rgba(21, 149, 182, 0.35);
+    border-radius: 20px;
+}
+
+/* dots pill — slides in from right with a bounce */
+.bubble-dots-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 14px 22px;
+    background: linear-gradient(135deg, var(--ocean), var(--teal));
+    border-radius: 20px 20px 7px 20px;
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 220ms ease,
+                transform 380ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.bubble-dots-pill span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--white);
+    opacity: 0.6;
+    animation: bubble-pulse 1.4s infinite both;
+}
+.bubble-dots-pill span:nth-child(2) { animation-delay: 0.2s; }
+.bubble-dots-pill span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bubble-pulse {
+    0%, 60%, 100% { transform: translateY(0);    opacity: 0.4; }
+    30%           { transform: translateY(-3px); opacity: 1; }
+}
+
+.answer-group:hover .bubble-dots-pill {
+    transform: scale(1.03);
+}
+
+/* expanded state: hide dots, reveal stacked message bubbles */
+.bubble-list {
+    display: grid;
+    grid-template-rows: 0fr;
+    overflow-x: visible;
+    overflow-y: clip;
+    width: 100%;
+    transition: grid-template-rows 350ms ease;
+}
+
+.bubble-list-inner {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+}
+
+.bubble-list .msg {
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity 280ms ease, transform 380ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* show / hide rules driven by aria-expanded */
+.answer-group[aria-expanded="true"] .bubble-dots-pill {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    opacity: 0;
+    transform: translateX(40px);
+    pointer-events: none;
+    /* OPENING: shrink + fade + slide right quickly so msgs can take over */
+    transition: opacity 180ms ease,
+                transform 220ms ease,
+                max-height 200ms ease 100ms,
+                padding-top 200ms ease 100ms,
+                padding-bottom 200ms ease 100ms;
+}
+
+.answer-group[aria-expanded="true"] .bubble-list {
+    grid-template-rows: 1fr;
+}
+
+.answer-group[aria-expanded="true"] .bubble-list .msg {
+    opacity: 1;
+    transform: translateX(0);
+    transition-delay: calc(var(--i, 0) * 100ms + 150ms);
+}
+
+/* individual message bubbles */
+.msg {
+    display: block;
+    padding: 12px 20px;
+    font-weight: 500;
+    font-size: 1.05rem;
+    color: var(--white);
+    border-radius: 20px 20px 7px 20px;
+    line-height: 1.5;
+    text-align: left;
+    width: fit-content;
+    max-width: 100%;
+}
+
+/* gradient cycling per message inside a group */
+.bubble-list-inner > .msg:nth-child(1) { background: linear-gradient(135deg, var(--deep),  var(--ocean)); }
+.bubble-list-inner > .msg:nth-child(2) { background: linear-gradient(145deg, var(--ocean), var(--teal));  }
+.bubble-list-inner > .msg:nth-child(3) { background: linear-gradient(155deg, var(--teal),  var(--sky));   }
+.bubble-list-inner > .msg:nth-child(4) { background: linear-gradient(140deg, var(--teal),  var(--mint));  }

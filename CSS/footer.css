@@ -1,0 +1,22 @@
+.footer {
+    padding: 40px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+}
+
+.footer p {
+    margin: 0;
+}
+
+.footer a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color var(--t-fast);
+}
+
+.footer a:hover {
+    color: var(--black);
+}

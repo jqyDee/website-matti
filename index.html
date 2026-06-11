@@ -1,73 +1,121 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>rip.ox</title>
-        <link rel="shortcut icon" href="./images/logo-big.png">
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="./CSS/styleindex.css">
-        <script type="text/javascript" src="./javascript/script.js"></script>
-            
-    </head>
-    <body id="body">
-        <div class="nav">
-            <a href="./index.html"><img class="nav-logo" src="./images/logo-big.png" alt="Logo"></a>
-            <div class="nav-list">
-                <span id="news-item" class="nav-item" href="">news</span>
-                <a class="nav-item" href="">teams</a>
-                <a class="nav-item" href="">rip.ox</a>
-                <a class="nav-item" href="">contact</a>
-                
-                <div id="news-slideover" class="slideover-body">
-                    <p>Test</p>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Matti Fischbach — Developer</title>
+    <meta name="description" content="Developer building things for the web.">
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/styleindex.css">
+</head>
+<body>
+    <nav class="nav">
+        <a href="#" class="nav-logo-link" aria-label="matti fischbach">
+            <svg class="nav-logo" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <defs>
+                    <linearGradient id="logo-sq" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#1595b6"/>
+                        <stop offset="100%" stop-color="#0b2545"/>
+                    </linearGradient>
+                    <linearGradient id="logo-ci" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#50e3c2" stop-opacity="0.9"/>
+                        <stop offset="100%" stop-color="#1595b6"/>
+                    </linearGradient>
+                </defs>
+                <rect x="2" y="2" width="26" height="26" rx="3" fill="url(#logo-sq)" transform="rotate(-15 15 15)"/>
+                <circle cx="30" cy="30" r="13" fill="url(#logo-ci)"/>
+            </svg>
+        </a>
+        <ul class="nav-list">
+            <li><a class="nav-item" href="#projects">projects</a></li>
+            <li><a class="nav-item" href="#about">about</a></li>
+            <li><a class="nav-item" href="mailto:matti.fischbach@web.de">contact</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <p class="hero-greeting">hi, i'm</p>
+                <h1 class="hero-name">matti<br>fischbach</h1>
+                <p class="hero-tagline">full stack developer. c to java to html.</p>
+                <div class="hero-links">
+                    <span class="hero-link-wrap">
+                        <a href="https://github.com/jqydee" class="hero-link">
+                            <svg class="icon-github" aria-hidden="true"><use href="images/icons/github.svg#github"/></svg>
+                            github
+                        </a>
+                    </span>
+                    <span class="hero-link-wrap">
+                        <a href="mailto:matti.fischbach@web.de" class="hero-link">
+                            <svg class="icon-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                            email
+                        </a>
+                    </span>
                 </div>
             </div>
-        </div>
+            <div class="hero-decoration" aria-hidden="true">
+                <div class="hero-shape-1"></div>
+                <div class="hero-shape-2"></div>
+            </div>
+        </section>
 
-        <div class="home">
-            <h1></h1>
-        </div>
-        <div class="box-container">
-            <div class="box">
-                <div class="box1-quadrat"></div>
-                <div class="box1-circle"></div>
-                <div class="box-text"><h2>Test</h2></div>
+        <section id="projects" class="section">
+            <h2 class="section-title">projects</h2>
+            <div class="box-container" id="projects-container"></div>
+        </section>
+
+        <section id="about" class="section">
+            <h2 class="section-title">about</h2>
+            <div class="chat-container-outer">
+                <div class="chat-container-inner">
+                    <p class="left">who are you?</p>
+                    <div class="answer-group" role="button" tabindex="0" aria-expanded="false">
+                        <span class="bubble-dots-pill"><span></span><span></span><span></span></span>
+                        <div class="bubble-list"><div class="bubble-list-inner">
+                            <span class="msg">developer based in germany.</span>
+                            <span class="msg">i like clean code and software that gets out of your way.</span>
+                        </div></div>
+                    </div>
+
+                    <p class="left">what do you build?</p>
+                    <div class="answer-group" role="button" tabindex="0" aria-expanded="false">
+                        <span class="bubble-dots-pill"><span></span><span></span><span></span></span>
+                        <div class="bubble-list"><div class="bubble-list-inner">
+                            <span class="msg">web apps, apis.</span>
+                            <span class="msg">also the occasional weird side project.</span>
+                        </div></div>
+                    </div>
+
+                    <p class="left">favorite stack?</p>
+                    <div class="answer-group" role="button" tabindex="0" aria-expanded="false">
+                        <span class="bubble-dots-pill"><span></span><span></span><span></span></span>
+                        <div class="bubble-list"><div class="bubble-list-inner">
+                            <span class="msg">depends on the problem.</span>
+                            <span class="msg">typescript, go, python. whatever fits.</span>
+                        </div></div>
+                    </div>
+
+                    <p class="left">why plain html on this site?</p>
+                    <div class="answer-group" role="button" tabindex="0" aria-expanded="false">
+                        <span class="bubble-dots-pill"><span></span><span></span><span></span></span>
+                        <div class="bubble-list"><div class="bubble-list-inner">
+                            <span class="msg">no build step, no framework lock-in, no deps to update.</span>
+                            <span class="msg">fast to write, fast to load.</span>
+                            <span class="msg">easy to debug five years from now.</span>
+                        </div></div>
+                    </div>
+                </div>
             </div>
-            <div class="box">
-                <div class="box2-quadrat1"></div>
-                <div class="box2-quadrat2"></div>
-                <div class="box-text"><h2>Test</h2></div>
-            </div>
-            <div class="box">
-                <div class="box3-circle1"></div>
-                <div class="box3-circle2"></div>
-                <div class="box-text"><h2>Test</h2></div>
-            </div>
-            <div class="box" id="test">
-                <div class="box4-quadrat1"></div>
-                <div class="box4-quadrat2"></div>
-                <div class="box-text"><h2>Test</h2></div>
-            </div>
-            <!--
-            <div class="box" id="test">
-                <img class="box5-logo" src="./images/logo-big.png" alt="">
-                <div class="box-text"><h2>Test</h2></div>
-            </div>-->
-        </div>
-        <div class="spacer"></div>
-        <div class="chat-container-outer">
-            <div class="chat-container-inner">
-                <p class="right">Ayoo, what's poppin?</p>
-                <p class="right">Haven't heard from you in a minute</p>
-                <p class="left">Yoooo, you are so fiiine bruh ;)</p>
-                <p class="right">U good bro?</p>
-            </div>
-        </div>
-        <div class="spacer"></div>
-    </body>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>Matti Fischbach &mdash; <a href="mailto:matti.fischbach@web.de">matti.fischbach@web.de</a></p>
+    </footer>
+    <script src="./javascript/main.js"></script>
+</body>
 </html>
