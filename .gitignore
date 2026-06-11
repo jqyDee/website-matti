@@ -3,4 +3,5 @@
 
 .DS_Store
 
-/content/projects/*.test.md
+/content/**/*.test.md
+/images/tech/*

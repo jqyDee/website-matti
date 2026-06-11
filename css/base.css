@@ -2,18 +2,27 @@
     box-sizing: border-box;
 }
 
-html {
-    scroll-behavior: smooth;
-}
-
 html, body {
     margin: 0;
+    height: 100%;
+    overflow: hidden;
     font-family: "Work Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 400;
     color: var(--text);
+    background: var(--bg);
     text-rendering: optimizeLegibility;
     font-size: 16px;
     text-transform: lowercase;
+}
+
+.page-scroll {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: clip;
+    scroll-behavior: smooth;
+    overscroll-behavior-y: none;
+    -webkit-overflow-scrolling: touch;
+    will-change: scroll-position; /* Tells the browser to optimize for scrolling */
 }
 
 h1, h2, h3 {
@@ -32,7 +41,7 @@ ul {
 }
 
 .section {
-    padding: 80px 40px;
+    padding: 80px 0px 0px 0px;
     max-width: var(--section-max);
     margin: 0 auto;
 }
@@ -41,6 +50,6 @@ ul {
     font-size: 2rem;
     font-weight: 700;
     letter-spacing: 0.12em;
-    color: var(--black);
+    color: var(--heading);
     margin-bottom: 40px;
 }

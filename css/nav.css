@@ -47,6 +47,43 @@
     outline: none;
 }
 
+.theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--white);
+    opacity: 0.75;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    transition: opacity var(--t-fast), transform var(--t-fast);
+}
+
+.theme-toggle:hover {
+    opacity: 1;
+    transform: rotate(18deg) scale(1.12);
+}
+
+.theme-toggle svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+}
+
+/* light mode: show moon (click → go dark) */
+.theme-toggle .icon-sun  { display: none; }
+.theme-toggle .icon-moon { display: block; }
+
+/* dark mode: show sun (click → go light) */
+[data-theme="dark"] .theme-toggle .icon-sun  { display: block; }
+[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .theme-toggle .icon-sun  { display: block; }
+    :root:not([data-theme="light"]) .theme-toggle .icon-moon { display: none; }
+}
+
 /* muted, darker versions of palette stops */
 .nav-list li:nth-child(1) .nav-item:hover,
 .nav-list li:nth-child(1) .nav-item:focus-visible { color: #4aabce; }

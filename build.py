@@ -10,6 +10,63 @@ import urllib.request
 import markdown
 
 
+# ── tech-stack logo fetcher (simpleicons.org) ──────────────
+TECH_SLUG_ALIASES = {
+    "node":      "nodedotjs",
+    "node.js":   "nodedotjs",
+    "nodejs":    "nodedotjs",
+    "next.js":   "nextdotjs",
+    "nuxt.js":   "nuxtdotjs",
+    "vue":       "vuedotjs",
+    "vue.js":    "vuedotjs",
+    "go":        "go",
+    "golang":    "go",
+    "postgres":  "postgresql",
+    "ios-sdk":   "ios",
+    "ios sdk":   "ios",
+    "wasm":      "webassembly",
+    "ts":        "typescript",
+    "js":        "javascript",
+}
+
+TECH_DIR = "images/tech"
+
+
+def slugify_tech(tag):
+    """Lowercase, strip punctuation, apply alias map."""
+    s = tag.strip().lower()
+    if s in TECH_SLUG_ALIASES:
+        return TECH_SLUG_ALIASES[s]
+    return re.sub(r"[^a-z0-9]", "", s)
+
+
+def fetch_tech_logo(tag):
+    """Downloads simpleicon SVG to images/tech/<slug>.svg. Returns relative path or None."""
+    slug = slugify_tech(tag)
+    if not slug:
+        return None
+
+    target = os.path.join(TECH_DIR, f"{slug}.svg")
+    if os.path.exists(target):
+        return target.replace(os.sep, "/")
+
+    url = f"https://cdn.simpleicons.org/{slug}"
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (build)"})
+        with urllib.request.urlopen(req, timeout=6) as response:
+            content = response.read()
+        if not content.lstrip().startswith(b"<svg"):
+            return None
+        os.makedirs(TECH_DIR, exist_ok=True)
+        with open(target, "wb") as f:
+            f.write(content)
+        print(f"  ↳ fetched logo for '{tag}' → {target}")
+        return target.replace(os.sep, "/")
+    except Exception as e:
+        print(f"  [!] no logo for '{tag}' (slug={slug}): {e}")
+        return None
+
+
 # ── fetcher helper ─────────────────────────────────────────
 def fetch_github_readme_html(repo_url):
     """Fetches the ALREADY RENDERED HTML README from GitHub."""
@@ -54,7 +111,20 @@ def parse_frontmatter(text):
         else:
             meta[key] = val
 
+    # rewrite GitHub blob URLs (HTML pages) to raw URLs for image fields
+    if "logo" in meta and isinstance(meta["logo"], str):
+        meta["logo"] = github_blob_to_raw(meta["logo"])
+
     return meta, parts[2].strip()
+
+
+def github_blob_to_raw(url):
+    """github.com/USER/REPO/blob/BRANCH/PATH → raw.githubusercontent.com/USER/REPO/BRANCH/PATH"""
+    m = re.match(r"https?://github\.com/([^/]+)/([^/]+)/blob/(.+)", url)
+    if m:
+        owner, repo, rest = m.groups()
+        return f"https://raw.githubusercontent.com/{owner}/{repo}/{rest}"
+    return url
 
 
 # ── page template ──────────────────────────────────────────
@@ -70,44 +140,45 @@ PAGE_TMPL = """<!DOCTYPE html>
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/styleindex.css">
     <link rel="stylesheet" href="../css/detail.css">
+    <script>
+        (function(){{var t=localStorage.getItem('theme');if(t==='dark'){{document.documentElement.setAttribute('data-theme','dark');}}else if(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches){{document.documentElement.setAttribute('data-theme','dark');}}else if(t==='light'){{document.documentElement.setAttribute('data-theme','light');}}}})();
+    </script>
 </head>
 <body>
+<div class="page-scroll">
     <nav class="nav">
         <a href="../index.html" class="nav-logo-link" aria-label="home">
-            <svg class="nav-logo" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <defs>
-                    <linearGradient id="logo-sq" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#1595b6"/>
-                        <stop offset="100%" stop-color="#0b2545"/>
-                    </linearGradient>
-                    <linearGradient id="logo-ci" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#50e3c2" stop-opacity="0.9"/>
-                        <stop offset="100%" stop-color="#1595b6"/>
-                    </linearGradient>
-                </defs>
-                <rect x="6" y="6" width="22" height="22" rx="2" fill="url(#logo-sq)" transform="rotate(-15 17 17)"/>
-                <circle cx="31" cy="32" r="12" fill="url(#logo-ci)"/>
-            </svg>
+            <img class="nav-logo" src="../images/logo.svg" alt="">
         </a>
         <ul class="nav-list">
             <li><a class="nav-item" href="../index.html#projects">projects</a></li>
             <li><a class="nav-item" href="../index.html#about">about</a></li>
             <li><a class="nav-item" href="mailto:matti.fischbach@web.de">contact</a></li>
         </ul>
+        <button class="theme-toggle" id="theme-toggle" aria-label="toggle theme">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
     </nav>
 
     <main class="detail">
         <a class="detail-back" href="../index.html#{back_anchor}">back</a>
         <header class="detail-header">
-            <h1 class="detail-title">{title}</h1>
-            {tags_html}
+            {logo_html}
+            <div class="detail-header-text">
+                <h1 class="detail-title">{title}</h1>
+                {tags_html}
+            </div>
         </header>
         <article class="detail-body">
             {body_html}
             {readme_html}
         </article>
-        {extra}
     </main>
+</div>
+    {extra}
+    <script src="../javascript/detail.js" defer></script>
+    <script src="../javascript/theme.js" defer></script>
 </body>
 </html>
 """
@@ -116,17 +187,40 @@ PAGE_TMPL = """<!DOCTYPE html>
 def render_project_page(item):
     tags_html = ""
     if item.get("tags"):
+        def render_tag(t):
+            if isinstance(t, dict):
+                name = html.escape(t.get("name", ""))
+                logo = (
+                    f'<img class="box-tag-logo" src="../{html.escape(t["logo"])}" alt="">'
+                    if t.get("logo") else ""
+                )
+                return f'<span class="box-tag">{logo}{name}</span>'
+            return f'<span class="box-tag">{html.escape(t)}</span>'
+
         tags_html = (
             '<div class="detail-tags">'
-            + "".join(
-                f'<span class="box-tag">{html.escape(t)}</span>' for t in item["tags"]
-            )
+            + "".join(render_tag(t) for t in item["tags"])
             + "</div>"
         )
 
+    if item.get("logo"):
+        logo_html = f'<div class="detail-logo"><img src="{html.escape(item["logo"])}" alt=""></div>'
+    else:
+        initial = (item.get("title", "?").strip() or "?")[0].upper()
+        logo_html = f'<div class="detail-logo detail-logo--fallback">{html.escape(initial)}</div>'
+
     extra = ""
     if item.get("repo-url"):
-        extra = f'<a class="detail-link" href="{html.escape(item["repo-url"])}" target="_blank" rel="noopener">view repository</a>'
+        extra = (
+            '<div class="detail-repo-btn">'
+            '<span class="hero-link-wrap">'
+            f'<a class="hero-link" href="{html.escape(item["repo-url"])}" target="_blank" rel="noopener">'
+            '<svg class="icon-github" aria-hidden="true"><use href="../images/icons/github.svg#github"/></svg>'
+            'github'
+            '</a>'
+            '</span>'
+            '</div>'
+        )
 
     # 1. Parse local markdown with standard Python markdown
     body_html = markdown.markdown(
@@ -147,6 +241,7 @@ def render_project_page(item):
 
     return PAGE_TMPL.format(
         title=html.escape(item["title"]),
+        logo_html=logo_html,
         tags_html=tags_html,
         body_html=body_html,
         readme_html=readme_html,
@@ -174,6 +269,10 @@ def build(folder, out_json, pages_dir, page_renderer):
         meta.setdefault("slug", fname.removesuffix(".md"))
         meta["body"] = body
 
+        # tags: turn into [{name, logo}] objects, fetching logos from simpleicons
+        if isinstance(meta.get("tags"), list):
+            meta["tags"] = [{"name": t, "logo": fetch_tech_logo(t)} for t in meta["tags"]]
+
         # Fetch Pre-Rendered HTML if repo-url exists
         repo_url = meta.get("repo-url")
         if repo_url and "github.com" in repo_url:
@@ -197,6 +296,37 @@ def build(folder, out_json, pages_dir, page_renderer):
     print(f"  wrote {out_json} ({len(items)} items)\n")
 
 
+def build_about(src="content/about.md", out="data/about.json"):
+    """Parses content/about.md into [{question, answers: [...]}] JSON."""
+    if not os.path.isfile(src):
+        print(f"  skipping {src} (not found)")
+        return
+
+    with open(src, encoding="utf-8") as f:
+        text = f.read()
+
+    items = []
+    current = None
+    for raw_line in text.splitlines():
+        line = raw_line.strip()
+        if line.startswith("## "):
+            if current:
+                items.append(current)
+            current = {"question": line[3:].strip(), "answers": []}
+        elif line.startswith("- ") and current is not None:
+            current["answers"].append(line[2:].strip())
+    if current:
+        items.append(current)
+
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    with open(out, "w", encoding="utf-8") as f:
+        json.dump(items, f, indent=2, ensure_ascii=False)
+    print(f"  wrote {out} ({len(items)} q&a groups)\n")
+
+
 if __name__ == "__main__":
     print("building projects...")
     build("content/projects", "data/projects.json", "projects", render_project_page)
+
+    print("building about...")
+    build_about()

@@ -20,4 +20,55 @@
     --t-fast: 250ms ease-out;
     --t-slow: 500ms ease-out;
     --section-max: 1100px;
+
+    /* semantic theme vars — light defaults */
+    --bg: #ffffff;
+    --bg-surface: #f6f8fa;
+    --bg-code: #f3f4f6;
+    --border-code: #d0d7de;
+    --heading: #0b2545;
+    --text-strong: #111111;
+    --text-code: #1f2328;
+    --text-tag: #555555;
+    --readme-text: #24292f;
+    --readme-link: #0969da;
+    --card-fade: rgba(255, 255, 255, 0.97);
+}
+
+/* dark mode: manual override */
+[data-theme="dark"] {
+    --bg: #0d1117;
+    --bg-surface: #161b22;
+    --bg-code: #1c2128;
+    --border: #30363d;
+    --border-code: #30363d;
+    --text: #8b949e;
+    --text-muted: #6e7781;
+    --heading: #93c5fd;
+    --text-strong: #e6edf3;
+    --text-code: #c9d1d9;
+    --text-tag: #8b949e;
+    --readme-text: #c9d1d9;
+    --readme-link: #58a6ff;
+    --card-fade: rgba(13, 17, 23, 0.97);
+}
+
+/* dark mode: system preference (when user hasn't forced light) */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --bg: #0d1117;
+        --bg-surface: #161b22;
+        --bg-code: #1c2128;
+        --border: #30363d;
+        --border-code: #30363d;
+        --text: #8b949e;
+        --text-muted: #6e7781;
+        --heading: #93c5fd;
+        --text-strong: #e6edf3;
+        --text-code: #c9d1d9;
+        --text-tag: #8b949e;
+        --readme-text: #c9d1d9;
+        --readme-link: #58a6ff;
+        --card-fade: rgba(13, 17, 23, 0.97);
+    }
 }

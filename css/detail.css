@@ -22,7 +22,59 @@
 }
 
 .detail-header {
+    display: flex;
+    align-items: center;
+    gap: 24px;
     margin-bottom: 48px;
+}
+
+.detail-header-text {
+    flex: 1;
+    min-width: 0;
+    text-transform: none !important;
+}
+
+.detail-logo {
+    flex-shrink: 0;
+    width: 88px;
+    height: 88px;
+    border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
+    background: var(--deep);
+    box-shadow: 0 14px 36px rgba(11, 37, 69, 0.5),
+                0 4px 10px rgba(11, 37, 69, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: border-radius 60ms linear;
+}
+
+.detail-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.detail-logo--fallback {
+    background: linear-gradient(135deg, var(--ocean), var(--teal));
+    color: var(--white);
+    font-weight: 700;
+    font-size: 2.4rem;
+    text-transform: uppercase;
+}
+
+@media (max-width: 600px) {
+    .detail-header {
+        gap: 16px;
+    }
+    .detail-logo {
+        width: 64px;
+        height: 64px;
+    }
+    .detail-logo--fallback {
+        font-size: 1.8rem;
+    }
 }
 
 .detail-meta {
@@ -35,7 +87,7 @@
 .detail-title {
     font-size: clamp(2rem, 5vw, 3rem);
     font-weight: 700;
-    color: var(--deep);
+    color: var(--heading);
     line-height: 1.1;
     margin-bottom: 16px;
 }
@@ -55,31 +107,34 @@
 
 .detail-body h2 {
     font-size: 1.5rem;
-    color: var(--deep);
+    color: var(--heading);
     margin: 40px 0 16px;
 }
 
 .detail-body code {
-    background: #f3f4f6;
+    background: var(--bg-code);
+    color: var(--text-code);
     padding: 2px 6px;
     border-radius: 3px;
     font-size: 0.92em;
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
 }
 
-.detail-link {
-    display: inline-block;
-    margin-top: 32px;
-    padding: 12px 24px;
-    background: linear-gradient(135deg, var(--teal), var(--mint));
-    color: var(--deep);
-    border-radius: 4px;
-    font-weight: 600;
-    transition: box-shadow var(--t-fast);
+.detail-repo-btn {
+    position: fixed;
+    bottom: clamp(16px, 4vw, 32px);
+    right: clamp(16px, 4vw, 32px);
+    z-index: 100;
 }
 
-.detail-link:hover {
-    box-shadow: 0 6px 18px rgba(21, 149, 182, 0.35);
+.detail-repo-btn .hero-link {
+    border-radius: 999px;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    padding: clamp(12px, 2vw, 16px) clamp(28px, 4vw, 36px);
+}
+
+.detail-repo-btn .hero-link::before {
+    transform: translateX(0);
 }
 
 @media (max-width: 768px) {
@@ -95,10 +150,10 @@
 .readme-container {
     margin-top: 3rem;
     padding: 2rem;
-    background-color: #f6f8fa; /* Light GitHub-style gray */
-    border: 1px solid #d0d7de;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-code);
     border-radius: 8px;
-    color: #24292f;
+    color: var(--readme-text);
 }
 
 .readme-badge {
@@ -128,7 +183,7 @@
 }
 
 .readme-content th, .readme-content td {
-    border: 1px solid #d0d7de;
+    border: 1px solid var(--border-code);
     padding: 8px 12px;
 }
 
@@ -170,9 +225,9 @@
 }
 
 /* Links */
-.readme-content a, 
+.readme-content a,
 .detail-body a {
-    color: #0969da;
+    color: var(--readme-link);
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s ease;
@@ -186,15 +241,15 @@
 /* Code Blocks */
 .readme-content pre,
 .detail-body pre {
-    background-color: #f6f8fa;
-    border: 1px solid #d0d7de;
+    background-color: var(--bg-code);
+    border: 1px solid var(--border-code);
     padding: 1rem;
     border-radius: 6px;
     overflow-x: auto;
     font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
     font-size: 85%;
     line-height: 1.45;
-    color: #1f2328;
+    color: var(--text-code);
 }
 
 /* Lists */
