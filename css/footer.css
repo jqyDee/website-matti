@@ -17,6 +17,13 @@
     transition: color var(--t-fast);
 }
 
+.footer .icon-github {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.2em;
+    margin-bottom: 0.1em;
+}
+
 .footer a:hover {
     color: var(--text-strong);
 }

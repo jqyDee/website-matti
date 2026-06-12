@@ -175,6 +175,10 @@ PAGE_TMPL = """<!DOCTYPE html>
             {readme_html}
         </article>
     </main>
+    <footer class="footer">
+        <p><a href="mailto:matti.fischbach@web.de">matti.fischbach@web.de</a> &mdash; <a href="https://github.com/jqyDee/website-matti" target="_blank" rel="noopener"><svg class="icon-github" aria-hidden="true"><use href="../images/icons/github.svg#github"/></svg>source</a></p>
+        <p style="margin-top:0.4rem">&copy; 2026 Matti Fischbach</p>
+    </footer>
 </div>
     {extra}
     <script src="../javascript/detail.js" defer></script>

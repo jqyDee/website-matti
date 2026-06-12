@@ -41,7 +41,7 @@ ul {
 }
 
 .section {
-    padding: 80px 0px 0px 0px;
+    padding: 40px 0px 40px 0px;
     max-width: var(--section-max);
     margin: 0 auto;
 }
