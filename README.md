@@ -2,13 +2,13 @@
 
 Welcome to the repository for my personal portfolio website. This project is built using HTML, CSS, JavaScript, and a custom, lightweight Python-based Static Site Generator (SSG).
 
-## 🚀 Features
+## Features
 
 * **Custom Static Site Generator**: Uses a dependency-free Python script (`build.py`) to convert Markdown files into HTML project pages.
 * **Responsive Design**: Custom CSS structured across multiple files for maintainability.
 * **Automated Deployment**: Automatically builds and deploys to GitHub Pages using GitHub Actions whenever changes are pushed to the `main` branch.
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 .
@@ -25,7 +25,7 @@ Welcome to the repository for my personal portfolio website. This project is bui
 └── Makefile              # Quick commands for building and local development
 ```
 
-## 🛠️ Local Development
+## Local Development
 
 To run this project locally, you only need Python 3 installed. For the best development experience, a local live-reloading server like `live-server` is recommended.
 
@@ -51,7 +51,7 @@ Starts a local server with live reloading.
 make dev
 ```
 
-## 📝 Adding New Projects
+## Adding New Projects
 
 To add a new project to the portfolio, simply create a new Markdown (`.md`) file inside the `content/projects/` directory. 
 
@@ -70,7 +70,7 @@ Write your project description here. The build script supports **bold**, *italic
 
 After creating or modifying a markdown file, run `make build` to generate the corresponding HTML file.
 
-## 🌐 Deployment
+## Deployment
 
 This website is automatically deployed to GitHub Pages. The pipeline is configured in `.github/workflows/pages.yml`. 
 
