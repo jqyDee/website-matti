@@ -27,6 +27,10 @@ TECH_SLUG_ALIASES = {
     "wasm":      "webassembly",
     "ts":        "typescript",
     "js":        "javascript",
+    "java":      "openjdk",
+    "maven":     "apachemaven",
+    "tomcat":    "apachetomcat",
+    "h2":        None,
 }
 
 TECH_DIR = "images/tech"
